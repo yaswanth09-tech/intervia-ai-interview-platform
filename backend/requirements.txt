@@ -12,7 +12,7 @@ python-dotenv==1.0.1
 httpx==0.27.2
 email-validator==2.2.0
 pymupdf==1.24.11
-spacy==3.8.14
+spacy==3.8.13
 faster-whisper
 certifi>=2024.2.2
 # After pip install, also run:
