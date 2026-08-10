@@ -14,7 +14,6 @@ email-validator==2.2.0
 pymupdf==1.24.11
 spacy==3.8.13
 faster-whisper
-certifi>=2024.2.2
-# After pip install, also run:
-#   python3 -m pip install https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
+certifi>=2024.2.2 
+https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
 
