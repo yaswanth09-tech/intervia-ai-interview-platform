@@ -65,7 +65,11 @@ function FloatingBars() {
   )
 }
 
-export default function LoginAuthLayout({ children }) {
+export default function LoginAuthLayout({
+  children,
+  title = 'Welcome back',
+  subtitle = 'Continue your preparation journey.',
+}) {
   const year = new Date().getFullYear()
 
   return (
@@ -196,8 +200,8 @@ export default function LoginAuthLayout({ children }) {
                 <span className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] shadow-[0_0_30px_rgba(139,92,246,0.4)]">
                   <SignalMark className="h-6 w-6" />
                 </span>
-                <h1 className="font-display text-[24px] font-semibold text-white">Welcome back</h1>
-                <p className="mt-1.5 text-sm text-white/50">Continue your preparation journey.</p>
+                <h1 className="font-display text-[24px] font-semibold text-white">{title}</h1>
+                <p className="mt-1.5 text-sm text-white/50">{subtitle}</p>
               </div>
 
               {children}
