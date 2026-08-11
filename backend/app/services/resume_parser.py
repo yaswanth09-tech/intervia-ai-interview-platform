@@ -89,33 +89,46 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
     return "\n".join(pages_text)
 
 
-def _build_heading_regex() -> re.Pattern:
-    """One regex that matches any known heading on its own line."""
-    all_patterns = [p for patterns in SECTION_HEADINGS.values() for p in patterns]
-    joined = "|".join(all_patterns)
-    # Heading lines are typically short, often uppercase, alone on a line.
-    return re.compile(rf"^\s*(?P<heading>{joined})\s*:?\s*$", re.IGNORECASE | re.MULTILINE)
+def _clean_heading_candidate(line: str) -> str:
+    """Strip leading icon/bullet glyphs so a heading is still recognized even
+    when the PDF embeds a small icon character right before the heading text
+    (common in resume templates with icon-labelled section headers, which
+    PyMuPDF often extracts as a stray non-letter character glued to the
+    start of the line)."""
+    cleaned = re.sub(r"^[^A-Za-z]+", "", line)
+    return cleaned.strip().rstrip(":").strip()
 
 
 def split_into_sections(text: str) -> dict[str, str]:
-    """Split resume text into {canonical_section_key: raw_section_text}."""
-    heading_regex = _build_heading_regex()
-    matches = list(heading_regex.finditer(text))
+    """Split resume text into {canonical_section_key: raw_section_text}.
 
-    sections: dict[str, str] = {}
-    for i, match in enumerate(matches):
-        heading_text = match.group("heading").strip().lower()
+    Matches heading candidates line-by-line (rather than with a single
+    whole-text regex) so a stray leading character on the heading line
+    doesn't prevent the whole line from matching.
+    """
+    lines = text.splitlines()
+    heading_positions: list[tuple[str, int]] = []
+
+    for i, line in enumerate(lines):
+        candidate = _clean_heading_candidate(line)
+        # Heading lines are short and alone on a line; skip anything longer
+        # (avoids false-matches on body text that happens to contain a
+        # heading word mid-sentence).
+        if not candidate or len(candidate) > 40:
+            continue
         canonical_key = next(
             (key for key, patterns in SECTION_HEADINGS.items()
-             if any(re.fullmatch(p, heading_text, re.IGNORECASE) for p in patterns)),
+             if any(re.fullmatch(p, candidate, re.IGNORECASE) for p in patterns)),
             None,
         )
-        if canonical_key is None:
-            continue
+        if canonical_key is not None:
+            heading_positions.append((canonical_key, i))
 
-        start = match.end()
-        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
-        section_body = text[start:end].strip()
+    sections: dict[str, str] = {}
+    for idx, (canonical_key, line_idx) in enumerate(heading_positions):
+        start_line = line_idx + 1
+        end_line = heading_positions[idx + 1][1] if idx + 1 < len(heading_positions) else len(lines)
+        section_body = "\n".join(lines[start_line:end_line]).strip()
 
         # If a section heading repeats, append rather than overwrite.
         if canonical_key in sections:
