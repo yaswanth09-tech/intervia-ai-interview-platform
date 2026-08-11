@@ -85,7 +85,13 @@ def _split_entry_blocks(section_text: str) -> list[str]:
 
 def extract_text_from_pdf(file_bytes: bytes) -> str:
     with fitz.open(stream=file_bytes, filetype="pdf") as doc:
-        pages_text = [page.get_text() for page in doc]
+        # sort=True reorders extracted text into visual top-to-bottom,
+        # left-to-right reading order. Without it, PyMuPDF can emit text
+        # in internal PDF content-stream order, which scrambles resumes
+        # that mix left-aligned body text with right-aligned dates/labels
+        # (a very common resume layout) -- headings end up bunched
+        # together before any of their actual content.
+        pages_text = [page.get_text(sort=True) for page in doc]
     return "\n".join(pages_text)
 
 
