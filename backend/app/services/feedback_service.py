@@ -126,6 +126,12 @@ async def generate_feedback_and_roadmap(
     skipped_topics = []
     desc_scores_list = []
 
+    # Total number of descriptive questions the candidate was actually given
+    # (answered + skipped). Used below so a fully- or partially-skipped round
+    # is scored against the full question count, not just the attempted ones —
+    # otherwise skipping every descriptive question costs nothing.
+    total_descriptive_questions = len(evaluations)
+
     for ev in evaluations:
         q_text = ev.get("question", "")
         if ev.get("was_skipped"):
@@ -146,10 +152,18 @@ async def generate_feedback_and_roadmap(
             f"- Question: {q_text}\n  Answer: {ans_text[:150]}...\n  Scores (0-10): Correctness={c}, Relevance={r}, Completeness={comp}, Communication={comm}\n  Notes: {just}"
         )
 
-    if desc_scores_list:
-        desc_pct = round((sum(desc_scores_list) / (len(desc_scores_list) * 10)) * 100, 1)
+    # Score skipped questions as 0 rather than excluding them, so the
+    # descriptive percentage reflects the whole round the candidate was
+    # given — not just the subset they chose to answer.
+    if total_descriptive_questions:
+        desc_pct = round((sum(desc_scores_list) / (total_descriptive_questions * 10)) * 100, 1)
     else:
         desc_pct = 0.0
+
+    # Distinguish "scored 0% because they answered and did badly" from
+    # "no descriptive round happened at all" — the latter should not drag
+    # overall_score down, the former should.
+    had_descriptive_round = total_descriptive_questions > 0
 
     desc_text = "\n".join(desc_summaries) if desc_summaries else "No descriptive questions answered."
     skipped_text = "\n".join(f"- {t}" for t in skipped_topics) if skipped_topics else "None."
@@ -177,12 +191,23 @@ async def generate_feedback_and_roadmap(
             ]
         }
 
-    # 4. Calculate overall score (50% MCQ, 50% Descriptive)
-    if mcq_results and desc_scores_list:
+    # 4. Calculate overall score (40% MCQ, 60% Descriptive)
+    #
+    # Previously this branched on `desc_scores_list` (only populated by
+    # *answered* descriptive questions), so a fully-skipped descriptive round
+    # made `desc_scores_list == []` and silently fell through to
+    # `overall_score = mcq_pct` — i.e. skipping every descriptive question
+    # was completely free and Overall Score just mirrored the MCQ score.
+    #
+    # Now it branches on whether a descriptive round existed at all
+    # (`had_descriptive_round`), and `desc_pct` already treats skipped
+    # questions as 0 (see above), so a skipped round correctly drags the
+    # composite score down instead of being ignored.
+    if mcq_results and had_descriptive_round:
         overall_score = round((mcq_pct * 0.4) + (desc_pct * 0.6), 1)
     elif mcq_results:
         overall_score = mcq_pct
-    elif desc_scores_list:
+    elif had_descriptive_round:
         overall_score = desc_pct
     else:
         overall_score = 0.0
