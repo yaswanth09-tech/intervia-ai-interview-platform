@@ -20,54 +20,54 @@ export default function AuthLayout({ title, subtitle, children }) {
 
   return (
     <div className="min-h-screen bg-white lg:grid lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
-      {/* Left: brand / product panel — hidden below lg, this is where the visual identity lives */}
-      <div className="relative hidden overflow-hidden bg-ink px-14 py-12 lg:flex lg:flex-col">
+      {/* Left: brand / product panel (light theme) */}
+      <div className="relative hidden overflow-hidden border-r border-border bg-paper px-14 py-12 lg:flex lg:flex-col">
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.06]"
+          className="pointer-events-none absolute inset-0 opacity-[0.5]"
           style={{
             backgroundImage:
-              'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
+              'linear-gradient(#E5E7EF 1px, transparent 1px), linear-gradient(90deg, #E5E7EF 1px, transparent 1px)',
             backgroundSize: '44px 44px',
           }}
         />
-        <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-signal/25 blur-[110px]" />
+        <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-signal/15 blur-[110px]" />
         <div className="pointer-events-none absolute -bottom-40 -left-16 h-80 w-80 rounded-full bg-good/10 blur-[110px]" />
 
         <div className="relative">
           <div className="flex items-center gap-3">
             <SignalMark className="h-7 w-7" />
-            <span className="h-4 w-px bg-white/20" aria-hidden="true" />
-            <span className="font-display text-[17px] font-bold uppercase tracking-[0.08em] text-white">
+            <span className="h-4 w-px bg-border" aria-hidden="true" />
+            <span className="font-display text-[17px] font-bold uppercase tracking-[0.08em] text-ink">
               Intervia
             </span>
           </div>
-          <p className="mt-2 pl-[calc(1.75rem+1.5rem+1px)] font-mono text-[10.5px] uppercase tracking-[0.16em] text-signal-soft/70">
+          <p className="mt-2 pl-[calc(1.75rem+1.5rem+1px)] font-mono text-[10.5px] uppercase tracking-[0.16em] text-signal">
             AI-Powered Interview Practice &amp; Performance Improvement
           </p>
         </div>
 
         <div className="relative flex flex-1 items-center">
           <div className="max-w-md">
-            <h2 className="mb-4 font-display text-[28px] font-semibold leading-[1.2] text-white">
+            <h2 className="mb-4 font-display text-[28px] font-semibold leading-[1.2] text-ink">
               Practice on questions built from your own resume.
             </h2>
-            <p className="mb-8 text-[15px] leading-relaxed text-white/60">
+            <p className="mb-8 text-[15px] leading-relaxed text-[#4A4D68]">
               Upload your resume, pick a difficulty, and the interview is generated around your
               actual experience — not a generic question bank.
             </p>
 
-            {/* Signature element: a real sample of the product's output, not decoration */}
-            <div className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-[0_1px_0_rgba(255,255,255,0.06)_inset] backdrop-blur-sm">
+            {/* Sample of the product's output */}
+            <div className="rounded-lg border border-border bg-white p-5 shadow-sm">
               <div className="mb-3 flex items-center justify-between">
-                <span className="rounded-full bg-signal/25 px-2.5 py-1 font-mono text-[11px] font-medium text-signal-soft">
+                <span className="rounded-full bg-signal/10 px-2.5 py-1 font-mono text-[11px] font-medium text-signal">
                   Medium · Q4 · Descriptive
                 </span>
-                <span className="flex items-center gap-1.5 font-mono text-[11px] text-white/40">
+                <span className="flex items-center gap-1.5 font-mono text-[11px] text-slate-500">
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-good" />
                   generated from resume
                 </span>
               </div>
-              <p className="text-[13.5px] leading-relaxed text-white/85">
+              <p className="text-[13.5px] leading-relaxed text-ink">
                 "You mentioned optimizing a PostgreSQL query on your resume — walk me through how
                 you identified the bottleneck."
               </p>
@@ -75,7 +75,7 @@ export default function AuthLayout({ title, subtitle, children }) {
 
             <ul className="mt-8 space-y-3">
               {FEATURES.map((f) => (
-                <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-white/65">
+                <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-[#4A4D68]">
                   <span className="text-good">
                     <CheckIcon />
                   </span>
@@ -86,7 +86,7 @@ export default function AuthLayout({ title, subtitle, children }) {
           </div>
         </div>
 
-        <p className="relative font-mono text-[11px] text-white/25">
+        <p className="relative font-mono text-[11px] text-slate-400">
           © {year} Intervia
         </p>
       </div>
