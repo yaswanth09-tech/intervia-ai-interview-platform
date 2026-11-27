@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import LoginAuthLayout from '../components/LoginAuthLayout'
 
-/* ---------- small icons, scoped to this page's dark theme ---------- */
+/* ---------- small icons, scoped to this page ---------- */
 
 function ErrorIcon() {
   return (
@@ -23,73 +23,77 @@ function ArrowIcon() {
   )
 }
 
+/* Note: icons use h-[18px] w-[18px]. The previous `h-4.5 w-4.5` is not a valid
+   Tailwind class in this project, so the icons rendered oversized. */
+
 function MailIcon() {
   return (
-    <svg viewBox="0 0 20 20" fill="none" className="h-4.5 w-4.5" aria-hidden="true">
-      <rect x="2.5" y="4.5" width="15" height="11" rx="1.75" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M3.5 5.5 10 10.75l6.5-5.25" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+    <svg viewBox="0 0 20 20" fill="none" className="h-[18px] w-[18px]" aria-hidden="true">
+      <rect x="2.5" y="4.5" width="15" height="11" rx="1.75" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M3.5 5.5 10 10.75l6.5-5.25" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
 
 function LockIcon() {
   return (
-    <svg viewBox="0 0 20 20" fill="none" className="h-4.5 w-4.5" aria-hidden="true">
-      <rect x="4" y="8.75" width="12" height="8" rx="1.75" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M6.5 8.75V6.5a3.5 3.5 0 0 1 7 0v2.25" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+    <svg viewBox="0 0 20 20" fill="none" className="h-[18px] w-[18px]" aria-hidden="true">
+      <rect x="4" y="8.75" width="12" height="8" rx="1.75" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M6.5 8.75V6.5a3.5 3.5 0 0 1 7 0v2.25" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
     </svg>
   )
 }
 
 function EyeIcon({ off }) {
   return off ? (
-    <svg viewBox="0 0 20 20" fill="none" className="h-4.5 w-4.5" aria-hidden="true">
-      <path d="M2.5 10S5.5 4.5 10 4.5 17.5 10 17.5 10 14.5 15.5 10 15.5 2.5 10 2.5 10Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
-      <circle cx="10" cy="10" r="2.25" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M3 3l14 14" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+    <svg viewBox="0 0 20 20" fill="none" className="h-[18px] w-[18px]" aria-hidden="true">
+      <path d="M2.5 10S5.5 4.5 10 4.5 17.5 10 17.5 10 14.5 15.5 10 15.5 2.5 10 2.5 10Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+      <circle cx="10" cy="10" r="2.25" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M3 3l14 14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
     </svg>
   ) : (
-    <svg viewBox="0 0 20 20" fill="none" className="h-4.5 w-4.5" aria-hidden="true">
-      <path d="M2.5 10S5.5 4.5 10 4.5 17.5 10 17.5 10 14.5 15.5 10 15.5 2.5 10 2.5 10Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
-      <circle cx="10" cy="10" r="2.25" stroke="currentColor" strokeWidth="1.3" />
+    <svg viewBox="0 0 20 20" fill="none" className="h-[18px] w-[18px]" aria-hidden="true">
+      <path d="M2.5 10S5.5 4.5 10 4.5 17.5 10 17.5 10 14.5 15.5 10 15.5 2.5 10 2.5 10Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+      <circle cx="10" cy="10" r="2.25" stroke="currentColor" strokeWidth="1.4" />
     </svg>
   )
 }
 
-/* ---------- dark-themed field primitives, local to this page ---------- */
+/* ---------- field primitives, local to this page ---------- */
 
-const darkInput =
-  'w-full appearance-none rounded-2xl bg-white/[0.05] py-3 text-[14.5px] text-white placeholder:text-white/30 ' +
-  'outline-none ring-1 ring-inset ring-white/10 transition duration-150 ' +
-  'focus:bg-white/[0.07] focus:ring-2 focus:ring-violet-400/50 focus:shadow-[0_0_0_4px_rgba(139,92,246,0.12)]'
+const fieldInput =
+  'w-full appearance-none rounded-2xl bg-white py-3 text-[14.5px] text-ink placeholder:text-[#8A8FA8] ' +
+  'outline-none ring-1 ring-inset ring-[#B8BCCD] shadow-sm transition duration-150 ' +
+  'hover:ring-[#9CA0B5] ' +
+  'focus:ring-2 focus:ring-signal focus:shadow-[0_0_0_4px_rgba(70,64,222,0.12)]'
 
-function DarkField({ label, id, Icon, ...props }) {
+function Field({ label, id, Icon, ...props }) {
   return (
     <div>
-      <label htmlFor={id} className="mb-2 block text-[13px] font-medium tracking-tight text-white/75">
+      <label htmlFor={id} className="mb-2 block text-[13px] font-semibold tracking-tight text-ink">
         {label}
       </label>
       <div className="relative">
         {Icon && (
-          <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-white/50">
+          <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-muted">
             <Icon />
           </span>
         )}
-        <input id={id} className={darkInput + (Icon ? ' pl-11 pr-4' : ' px-4')} {...props} />
+        <input id={id} className={fieldInput + (Icon ? ' pl-11 pr-4' : ' px-4')} {...props} />
       </div>
     </div>
   )
 }
 
-function DarkPasswordField({ label, id, value, onChange, ...props }) {
+function PasswordField({ label, id, value, onChange, ...props }) {
   const [visible, setVisible] = useState(false)
   return (
     <div>
-      <label htmlFor={id} className="mb-2 block text-[13px] font-medium tracking-tight text-white/75">
+      <label htmlFor={id} className="mb-2 block text-[13px] font-semibold tracking-tight text-ink">
         {label}
       </label>
       <div className="relative">
-        <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-white/50">
+        <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-muted">
           <LockIcon />
         </span>
         <input
@@ -97,13 +101,13 @@ function DarkPasswordField({ label, id, value, onChange, ...props }) {
           type={visible ? 'text' : 'password'}
           value={value}
           onChange={onChange}
-          className={darkInput + ' pl-11 pr-11'}
+          className={fieldInput + ' pl-11 pr-11'}
           {...props}
         />
         <button
           type="button"
           onClick={() => setVisible((v) => !v)}
-          className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-white/50 transition hover:text-white"
+          className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-muted transition hover:text-ink"
           aria-label={visible ? 'Hide password' : 'Show password'}
           tabIndex={-1}
         >
@@ -150,14 +154,17 @@ export default function Login() {
   return (
     <LoginAuthLayout>
       {error && (
-        <div className="mb-5 flex items-start gap-2 rounded-lg border border-red-400/25 bg-red-500/10 px-3.5 py-2.5 text-[13px] leading-snug text-red-200">
+        <div
+          role="alert"
+          className="mb-5 flex items-start gap-2 rounded-lg border border-bad/30 bg-[#FDECEF] px-3.5 py-2.5 text-[13px] leading-snug text-[#9B1C31]"
+        >
           <ErrorIcon />
           <span>{error}</span>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <DarkField
+        <Field
           id="email"
           label="Email"
           type="email"
@@ -168,7 +175,7 @@ export default function Login() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
         />
-        <DarkPasswordField
+        <PasswordField
           id="password"
           label="Password"
           required
@@ -179,20 +186,20 @@ export default function Login() {
         />
 
         <div className="flex items-center justify-between pt-1 text-[13px]">
-          <label htmlFor="remember" className="flex cursor-pointer items-center gap-2 text-white/55">
+          <label htmlFor="remember" className="flex cursor-pointer items-center gap-2 text-[#3F4260]">
             <input
               id="remember"
               type="checkbox"
               checked={remember}
               onChange={(e) => setRemember(e.target.checked)}
-              className="h-3.5 w-3.5 rounded border-white/20 bg-white/10 text-violet-500 accent-violet-500"
+              className="h-3.5 w-3.5 rounded border-[#B8BCCD] bg-white accent-[#4640DE]"
             />
             Remember me
           </label>
           <button
             type="button"
             title="Coming soon"
-            className="cursor-not-allowed font-medium text-violet-300/70 transition hover:text-violet-300"
+            className="cursor-not-allowed font-medium text-signal/80 transition hover:text-signal"
           >
             Forgot password?
           </button>
@@ -201,7 +208,7 @@ export default function Login() {
         <button
           type="submit"
           disabled={submitting}
-          className="mt-1 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-500 via-purple-500 to-blue-500 px-4 py-2.5 text-sm font-medium text-white shadow-[0_10px_30px_-10px_rgba(139,92,246,0.7)] transition hover:shadow-[0_14px_36px_-8px_rgba(139,92,246,0.85)] hover:brightness-110 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+          className="mt-1 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#4640DE] via-[#5A3FD6] to-[#3B5BDB] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_24px_-10px_rgba(70,64,222,0.65)] transition hover:shadow-[0_14px_30px_-10px_rgba(70,64,222,0.75)] hover:brightness-110 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {submitting ? (
             <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -215,9 +222,9 @@ export default function Login() {
         </button>
       </form>
 
-      <p className="mt-7 text-center text-sm text-white/45">
+      <p className="mt-7 text-center text-sm text-[#4A4D68]">
         Don't have an account?{' '}
-        <Link to="/signup" className="font-semibold text-violet-300 hover:text-violet-200 hover:underline">
+        <Link to="/signup" className="font-semibold text-signal hover:underline">
           Sign up
         </Link>
       </p>
