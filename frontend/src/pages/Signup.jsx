@@ -36,7 +36,7 @@ export default function Signup() {
         <div className="mb-8 flex items-center gap-2">
           <SignalMark />
           <span className="font-display text-lg font-semibold tracking-tight">
-            Interview Analyzer
+            Intervia
           </span>
         </div>
 
