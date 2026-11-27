@@ -23,10 +23,10 @@ function CheckCircleIcon() {
 
 function SectionCard({ title, children, empty }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-5 backdrop-blur-xl">
-      <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-white/45">{title}</h3>
+    <div className="rounded-2xl border border-border bg-white p-5 shadow-[0_10px_30px_-24px_rgba(20,22,43,0.25)]">
+      <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">{title}</h3>
       {empty ? (
-        <p className="text-sm text-white/40">Nothing detected in this section.</p>
+        <p className="text-sm text-muted">Nothing detected in this section.</p>
       ) : (
         children
       )}
@@ -82,26 +82,24 @@ export default function ResumeUpload() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-gradient-to-br from-[#0a0d20] via-[#0b0a1f] to-[#150a28] font-sans">
-      {/* continuous grid + ambient glows, same treatment as the rest of the app */}
+    <div className="relative min-h-screen overflow-x-hidden bg-paper font-body">
+      {/* faint grid overlay, same treatment as the rest of the app */}
       <div
-        className="pointer-events-none fixed inset-0 z-0 opacity-[0.04]"
+        className="pointer-events-none fixed inset-0 z-0 opacity-[0.035]"
         style={{
           backgroundImage:
-            'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
+            'linear-gradient(#14162B 1px, transparent 1px), linear-gradient(90deg, #14162B 1px, transparent 1px)',
           backgroundSize: '46px 46px',
           maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)',
         }}
       />
-      <div className="pointer-events-none fixed -top-32 left-1/4 h-[28rem] w-[28rem] rounded-full bg-violet-600/15 blur-[130px]" />
-      <div className="pointer-events-none fixed bottom-0 right-0 h-96 w-96 rounded-full bg-blue-600/10 blur-[130px]" />
 
       <div className="relative z-10">
         <DashboardHeader />
 
         <main className="mx-auto max-w-3xl px-6 py-10">
-          <h1 className="text-2xl font-bold tracking-tight text-white">Upload your resume</h1>
-          <p className="mt-1.5 text-sm text-white/50">
+          <h1 className="font-display text-2xl font-bold tracking-tight text-ink">Upload your resume</h1>
+          <p className="mt-1.5 text-sm text-[#4A4D68]">
             PDF only, up to 5MB. We'll pull out your skills, education, and experience to build
             questions around them.
           </p>
@@ -110,7 +108,7 @@ export default function ResumeUpload() {
             <div
               onDrop={handleDrop}
               onDragOver={(e) => e.preventDefault()}
-              className="mt-6 rounded-2xl border-2 border-dashed border-white/15 bg-white/[0.02] p-10 text-center backdrop-blur-xl transition hover:border-violet-400/30 hover:bg-white/[0.03]"
+              className="mt-6 rounded-2xl border-2 border-dashed border-[#B8BCCD] bg-white p-10 text-center transition hover:border-signal/50 hover:bg-[#F6F6FD]"
             >
               <input
                 ref={fileInputRef}
@@ -120,26 +118,26 @@ export default function ResumeUpload() {
                 className="hidden"
               />
 
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-violet-300 shadow-[0_0_24px_rgba(139,92,246,0.25)]">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-signal-soft text-signal ring-1 ring-signal/20">
                 <UploadIcon />
               </div>
 
-              <p className="text-sm text-white/50">Drag and drop your PDF here, or</p>
+              <p className="text-sm text-[#4A4D68]">Drag and drop your PDF here, or</p>
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="mt-3 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-medium text-white/80 transition hover:border-white/20 hover:text-white"
+                className="mt-3 rounded-xl border border-border bg-white px-4 py-2 text-sm font-medium text-ink transition hover:border-signal hover:bg-signal-soft hover:text-signal"
               >
                 Choose file
               </button>
 
               {file && (
-                <p className="mt-4 font-mono text-sm text-white/70">
-                  {file.name} <span className="text-white/35">({(file.size / 1024).toFixed(0)} KB)</span>
+                <p className="mt-4 font-mono text-sm text-ink">
+                  {file.name} <span className="text-muted">({(file.size / 1024).toFixed(0)} KB)</span>
                 </p>
               )}
 
               {error && (
-                <div className="mt-4 rounded-lg border border-red-400/25 bg-red-500/10 px-3.5 py-2.5 text-[13px] text-red-200">
+                <div className="mt-4 rounded-lg border border-bad/30 bg-[#FDECEF] px-3.5 py-2.5 text-[13px] text-[#9B1C31]">
                   {error}
                 </div>
               )}
@@ -147,7 +145,7 @@ export default function ResumeUpload() {
               <button
                 onClick={handleUpload}
                 disabled={!file || uploading}
-                className="mt-6 w-full rounded-xl bg-gradient-to-r from-violet-500 via-purple-500 to-blue-500 px-4 py-2.5 text-sm font-medium text-white shadow-[0_10px_30px_-10px_rgba(139,92,246,0.6)] transition hover:shadow-[0_14px_36px_-8px_rgba(139,92,246,0.8)] hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none sm:w-auto sm:px-8"
+                className="mt-6 w-full rounded-xl bg-gradient-to-r from-[#4640DE] via-[#5A3FD6] to-[#3B5BDB] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_30px_-12px_rgba(70,64,222,0.6)] transition hover:shadow-[0_14px_36px_-10px_rgba(70,64,222,0.7)] hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none sm:w-auto sm:px-8"
               >
                 {uploading ? 'Parsing…' : 'Upload and parse'}
               </button>
@@ -156,7 +154,7 @@ export default function ResumeUpload() {
 
           {parsed && (
             <div className="mt-6 space-y-4">
-              <div className="flex items-start gap-2 rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
+              <div className="flex items-start gap-2 rounded-xl border border-good/30 bg-[#E7F6F0] px-4 py-3 text-sm text-[#0B6B4C]">
                 <CheckCircleIcon />
                 <span>
                   Resume parsed successfully. Review what we found below — this is what your
@@ -169,7 +167,7 @@ export default function ResumeUpload() {
                   {parsed.skills.map((skill, i) => (
                     <span
                       key={i}
-                      className="rounded-full bg-violet-500/15 px-2.5 py-1 text-sm text-violet-200 ring-1 ring-inset ring-violet-400/20"
+                      className="rounded-full bg-signal-soft px-2.5 py-1 text-sm text-signal ring-1 ring-inset ring-signal/20"
                     >
                       {skill}
                     </span>
@@ -181,15 +179,15 @@ export default function ResumeUpload() {
                 <div className="space-y-4">
                   {parsed.experience.map((entry, i) => (
                     <div key={i}>
-                      <p className="text-sm font-medium text-white/85">
+                      <p className="text-sm font-medium text-ink">
                         {entry.organization || 'Unknown organization'}
                         {entry.date_range && (
-                          <span className="ml-2 font-mono text-xs text-white/40">
+                          <span className="ml-2 font-mono text-xs text-muted">
                             {entry.date_range}
                           </span>
                         )}
                       </p>
-                      <ul className="mt-1 list-inside list-disc text-sm text-white/55">
+                      <ul className="mt-1 list-inside list-disc text-sm text-[#3F4260]">
                         {entry.details.slice(0, 4).map((d, j) => (
                           <li key={j}>{d}</li>
                         ))}
@@ -202,10 +200,10 @@ export default function ResumeUpload() {
               <SectionCard title="Education" empty={parsed.education.length === 0}>
                 <div className="space-y-2">
                   {parsed.education.map((entry, i) => (
-                    <p key={i} className="text-sm text-white/80">
+                    <p key={i} className="text-sm text-[#3F4260]">
                       {entry.institution || entry.raw_text}
                       {entry.date_range && (
-                        <span className="ml-2 font-mono text-xs text-white/40">
+                        <span className="ml-2 font-mono text-xs text-muted">
                           {entry.date_range}
                         </span>
                       )}
@@ -215,7 +213,7 @@ export default function ResumeUpload() {
               </SectionCard>
 
               <SectionCard title="Projects" empty={parsed.projects.length === 0}>
-                <ul className="list-inside list-disc text-sm text-white/70">
+                <ul className="list-inside list-disc text-sm text-[#3F4260]">
                   {parsed.projects.map((p, i) => (
                     <li key={i}>{p}</li>
                   ))}
@@ -223,7 +221,7 @@ export default function ResumeUpload() {
               </SectionCard>
 
               <SectionCard title="Certifications" empty={parsed.certifications.length === 0}>
-                <ul className="list-inside list-disc text-sm text-white/70">
+                <ul className="list-inside list-disc text-sm text-[#3F4260]">
                   {parsed.certifications.map((c, i) => (
                     <li key={i}>{c}</li>
                   ))}
@@ -236,13 +234,13 @@ export default function ResumeUpload() {
                     setParsed(null)
                     setFile(null)
                   }}
-                  className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-medium text-white/80 transition hover:border-white/20 hover:text-white"
+                  className="rounded-xl border border-border bg-white px-4 py-2 text-sm font-medium text-ink transition hover:border-signal hover:bg-signal-soft hover:text-signal"
                 >
                   Upload a different file
                 </button>
                 <button
                   onClick={() => navigate(`/interview/difficulty?resume_id=${parsedResumeId}`)}
-                  className="rounded-xl bg-gradient-to-r from-violet-500 via-purple-500 to-blue-500 px-4 py-2 text-sm font-medium text-white shadow-[0_10px_30px_-10px_rgba(139,92,246,0.6)] transition hover:shadow-[0_14px_36px_-8px_rgba(139,92,246,0.8)] hover:brightness-110"
+                  className="rounded-xl bg-gradient-to-r from-[#4640DE] via-[#5A3FD6] to-[#3B5BDB] px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_30px_-12px_rgba(70,64,222,0.6)] transition hover:shadow-[0_14px_36px_-10px_rgba(70,64,222,0.7)] hover:brightness-110"
                 >
                   Continue → choose difficulty
                 </button>
