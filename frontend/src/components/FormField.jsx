@@ -1,12 +1,13 @@
 import { useState } from 'react'
 
 const baseInput =
-  'w-full rounded-md border border-border bg-white py-2.5 text-sm text-ink placeholder:text-muted/60 ' +
-  'outline-none transition focus:border-signal focus:ring-4 focus:ring-signal/10'
+  'w-full rounded-xl bg-white py-2.5 text-sm text-ink placeholder:text-[#8A8FA8] ' +
+  'ring-1 ring-inset ring-[#B8BCCD] outline-none transition ' +
+  'focus:ring-2 focus:ring-signal focus:shadow-[0_0_0_4px_rgba(70,64,222,0.12)]'
 
 function MailIcon() {
   return (
-    <svg viewBox="0 0 20 20" fill="none" className="h-4.5 w-4.5" aria-hidden="true">
+    <svg viewBox="0 0 20 20" fill="none" className="h-[18px] w-[18px]" aria-hidden="true">
       <rect x="2.5" y="4.5" width="15" height="11" rx="1.75" stroke="currentColor" strokeWidth="1.3" />
       <path d="M3.5 5.5 10 10.75l6.5-5.25" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
@@ -15,7 +16,7 @@ function MailIcon() {
 
 function LockIcon() {
   return (
-    <svg viewBox="0 0 20 20" fill="none" className="h-4.5 w-4.5" aria-hidden="true">
+    <svg viewBox="0 0 20 20" fill="none" className="h-[18px] w-[18px]" aria-hidden="true">
       <rect x="4" y="8.75" width="12" height="8" rx="1.75" stroke="currentColor" strokeWidth="1.3" />
       <path d="M6.5 8.75V6.5a3.5 3.5 0 0 1 7 0v2.25" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
     </svg>
@@ -24,7 +25,7 @@ function LockIcon() {
 
 function UserIcon() {
   return (
-    <svg viewBox="0 0 20 20" fill="none" className="h-4.5 w-4.5" aria-hidden="true">
+    <svg viewBox="0 0 20 20" fill="none" className="h-[18px] w-[18px]" aria-hidden="true">
       <circle cx="10" cy="7" r="3" stroke="currentColor" strokeWidth="1.3" />
       <path d="M3.75 16c.9-3 3.35-4.75 6.25-4.75S15.35 13 16.25 16" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
     </svg>
@@ -61,7 +62,7 @@ export function FormField({ label, id, icon, ...props }) {
 
 function EyeIcon({ off }) {
   return off ? (
-    <svg viewBox="0 0 20 20" fill="none" className="h-4.5 w-4.5" aria-hidden="true">
+    <svg viewBox="0 0 20 20" fill="none" className="h-[18px] w-[18px]" aria-hidden="true">
       <path
         d="M2.5 10S5.5 4.5 10 4.5 17.5 10 17.5 10 14.5 15.5 10 15.5 2.5 10 2.5 10Z"
         stroke="currentColor"
@@ -72,7 +73,7 @@ function EyeIcon({ off }) {
       <path d="M3 3l14 14" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
     </svg>
   ) : (
-    <svg viewBox="0 0 20 20" fill="none" className="h-4.5 w-4.5" aria-hidden="true">
+    <svg viewBox="0 0 20 20" fill="none" className="h-[18px] w-[18px]" aria-hidden="true">
       <path
         d="M2.5 10S5.5 4.5 10 4.5 17.5 10 17.5 10 14.5 15.5 10 15.5 2.5 10 2.5 10Z"
         stroke="currentColor"
