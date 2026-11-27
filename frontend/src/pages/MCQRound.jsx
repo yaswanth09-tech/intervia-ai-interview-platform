@@ -1,31 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import DashboardHeader from '../components/DashboardHeader'
+import Navbar from '../components/Navbar'
 import api from '../api/axios'
-
-function PageShell({ children }) {
-  return (
-    <div className="relative min-h-screen overflow-x-hidden bg-gradient-to-br from-[#0a0d20] via-[#0b0a1f] to-[#150a28] font-sans">
-      {/* continuous grid + ambient glows, same treatment as Dashboard/Login */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0 opacity-[0.04]"
-        style={{
-          backgroundImage:
-            'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
-          backgroundSize: '46px 46px',
-          maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)',
-        }}
-      />
-      <div className="pointer-events-none fixed -top-32 right-0 h-[28rem] w-[28rem] rounded-full bg-violet-600/15 blur-[130px]" />
-      <div className="pointer-events-none fixed bottom-0 left-0 h-96 w-96 rounded-full bg-blue-600/10 blur-[130px]" />
-
-      <div className="relative z-10">
-        <DashboardHeader />
-        {children}
-      </div>
-    </div>
-  )
-}
 
 export default function MCQRound() {
   const navigate = useNavigate()
@@ -88,29 +64,31 @@ export default function MCQRound() {
 
   if (loading) {
     return (
-      <PageShell>
-        <main className="mx-auto max-w-2xl px-6 py-20 text-center text-sm text-white/45">
+      <div className="min-h-screen bg-paper">
+        <Navbar />
+        <main className="mx-auto max-w-2xl px-6 py-20 text-center text-sm text-muted">
           Loading MCQ questions…
         </main>
-      </PageShell>
+      </div>
     )
   }
 
   if (error || !current) {
     return (
-      <PageShell>
+      <div className="min-h-screen bg-paper">
+        <Navbar />
         <main className="mx-auto max-w-2xl px-6 py-20 text-center">
-          <div className="rounded-xl border border-red-400/25 bg-red-500/10 p-4 text-sm text-red-200">
+          <div className="rounded-md border border-bad/30 bg-bad/5 p-4 text-sm text-bad">
             {error || 'No questions available.'}
           </div>
           <button
             onClick={() => navigate('/dashboard')}
-            className="mt-6 rounded-lg bg-gradient-to-r from-violet-500 via-purple-500 to-blue-500 px-4 py-2 text-sm font-medium text-white shadow-[0_10px_30px_-10px_rgba(124,58,237,0.6)] transition hover:brightness-110"
+            className="mt-6 rounded-md bg-signal px-4 py-2 text-sm font-medium text-white"
           >
             Back to Dashboard
           </button>
         </main>
-      </PageShell>
+      </div>
     )
   }
 
@@ -118,26 +96,27 @@ export default function MCQRound() {
   const progress = ((currentIndex + 1) / questions.length) * 100
 
   return (
-    <PageShell>
+    <div className="min-h-screen bg-paper">
+      <Navbar />
       <main className="mx-auto max-w-2xl px-6 py-10">
 
         {/* Progress Bar */}
         <div className="mb-6">
-          <div className="mb-2 flex items-center justify-between text-xs font-semibold text-white/45">
+          <div className="mb-2 flex items-center justify-between text-xs font-semibold text-muted">
             <span>MCQ Question {currentIndex + 1} of {questions.length}</span>
             <span>{Math.round(progress)}% Complete</span>
           </div>
-          <div className="h-1.5 w-full rounded-full bg-white/10">
+          <div className="h-1.5 w-full rounded-full bg-border">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-violet-500 to-blue-500 shadow-[0_0_10px_rgba(139,92,246,0.6)] transition-all duration-300"
+              className="h-full rounded-full bg-signal transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
         </div>
 
         {/* Question Card */}
-        <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-6 backdrop-blur-xl">
-          <h2 className="text-lg font-semibold leading-relaxed text-white whitespace-pre-wrap break-words">{current.question}</h2>
+        <div className="rounded-xl border border-border bg-panel p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-ink leading-relaxed">{current.question}</h2>
 
           <div className="mt-6 space-y-3">
             {current.options.map((opt, i) => {
@@ -146,17 +125,15 @@ export default function MCQRound() {
                 <button
                   key={i}
                   onClick={() => handleSelectOption(opt)}
-                  className={`flex w-full items-center gap-3 rounded-xl border p-4 text-left text-sm font-medium backdrop-blur-xl transition ${
+                  className={`flex w-full items-center gap-3 rounded-lg border p-4 text-left text-sm font-medium transition ${
                     isSelected
-                      ? 'border-violet-400/40 bg-violet-500/[0.1] text-violet-100 shadow-[0_15px_40px_-25px_rgba(76,29,149,0.7)]'
-                      : 'border-white/10 bg-white/[0.025] text-white/80 hover:border-white/20'
+                      ? 'border-signal bg-signal-soft text-signal'
+                      : 'border-border bg-paper text-ink hover:border-border/80'
                   }`}
                 >
                   <span
-                    className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold transition ${
-                      isSelected
-                        ? 'bg-gradient-to-br from-violet-500 to-blue-500 text-white shadow-[0_0_10px_rgba(139,92,246,0.6)]'
-                        : 'border border-white/10 bg-white/[0.05] text-white/45'
+                    className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                      isSelected ? 'bg-signal text-white' : 'bg-panel text-muted border border-border'
                     }`}
                   >
                     {String.fromCharCode(65 + i)}
@@ -173,7 +150,7 @@ export default function MCQRound() {
           <button
             onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
             disabled={currentIndex === 0}
-            className="rounded-lg border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-medium text-white/80 transition hover:border-white/20 hover:bg-white/[0.07] disabled:opacity-30"
+            className="rounded-md border border-border bg-panel px-4 py-2 text-sm font-medium hover:bg-paper disabled:opacity-30"
           >
             ← Previous
           </button>
@@ -181,7 +158,7 @@ export default function MCQRound() {
           {currentIndex < questions.length - 1 ? (
             <button
               onClick={() => setCurrentIndex((prev) => prev + 1)}
-              className="rounded-lg bg-gradient-to-r from-violet-500 via-purple-500 to-blue-500 px-6 py-2 text-sm font-medium text-white shadow-[0_10px_30px_-10px_rgba(124,58,237,0.6)] transition hover:brightness-110"
+              className="rounded-md bg-signal px-6 py-2 text-sm font-medium text-white hover:bg-signal/90"
             >
               Next Question →
             </button>
@@ -189,7 +166,7 @@ export default function MCQRound() {
             <button
               onClick={handleSubmitQuiz}
               disabled={submitting}
-              className="rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-2 text-sm font-semibold text-white shadow-[0_10px_30px_-10px_rgba(16,185,129,0.6)] transition hover:brightness-110 disabled:opacity-50"
+              className="rounded-md bg-good px-6 py-2 text-sm font-semibold text-white hover:bg-good/90 disabled:opacity-50"
             >
               {submitting ? 'Submitting MCQ Round…' : 'Finish MCQ Round ✓'}
             </button>
@@ -197,6 +174,6 @@ export default function MCQRound() {
         </div>
 
       </main>
-    </PageShell>
+    </div>
   )
 }
